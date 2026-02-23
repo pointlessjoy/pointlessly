@@ -85,7 +85,7 @@ cat > "$ARCHIVE_INDEX" <<EOF
 EOF
 fi
 
-echo "| ${SPRINT} | ${DATE_KST} | \\`${COMMIT_HASH}\\` | \\`${ARCHIVE_FILE}\\` |" >> "$ARCHIVE_INDEX"
+printf '| %s | %s | `%s` | `%s` |\n' "$SPRINT" "$DATE_KST" "$COMMIT_HASH" "$ARCHIVE_FILE" >> "$ARCHIVE_INDEX"
 
 # Commit archive/index changes
 if [[ -n "$(git status --porcelain)" ]]; then
