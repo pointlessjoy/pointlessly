@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>무용한기쁨 - 샘플</title>
+  <style>
+    :root{
+      --bg:#f8f8f6;
+      --card:#ffffff;
+      --text:#151515;
+      --muted:#7a7a7a;
+      --line:#ecece8;
+      --accent:#111;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif}
+    .wrap{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+    h1{font-size:28px;letter-spacing:-0.02em;margin:8px 0 4px}
+    .sub{color:var(--muted);margin:0 0 24px;font-size:14px}
+
+    .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+    textarea{width:100%;height:110px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:15px;resize:none;outline:none;background:#fff}
+    .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .count{font-size:12px;color:var(--muted)}
+    .btn{border:0;background:var(--accent);color:#fff;border-radius:999px;padding:10px 14px;font-size:14px;cursor:pointer}
+
+    .feed{margin-top:18px;display:grid;gap:10px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .text{font-size:17px;line-height:1.45;letter-spacing:-0.01em;margin:0 0 10px}
+    .meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+    .like{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>무용한기쁨</h1>
+    <p class="sub">나를 기쁘게 하는 아름답지만 무용한 것은?</p>
+
+    <section class="box">
+      <textarea maxlength="80" placeholder="예: 여름밤 선풍기 바람에 흔들리는 커튼 그림자"></textarea>
+      <div class="row">
+        <span class="count">0/80</span>
+        <button class="btn">남기기</button>
+      </div>
+    </section>
+
+    <section class="feed">
+      <article class="card">
+        <p class="text">퇴근길 유리창에 잠깐 비친 분홍 노을.</p>
+        <div class="meta"><span>익명 · 방금 전</span><button class="like">좋아요 12</button></div>
+      </article>
+      <article class="card">
+        <p class="text">포장 뜯을 때 나는 비닐 소리.</p>
+        <div class="meta"><span>익명 · 3분 전</span><button class="like">좋아요 7</button></div>
+      </article>
+      <article class="card">
+        <p class="text">버스 창문에 맺힌 빗방울이 옆으로 달릴 때.</p>
+        <div class="meta"><span>익명 · 8분 전</span><button class="like">좋아요 19</button></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

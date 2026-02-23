@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엽서 — 아름답지만 무용한 것</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #e8e0d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  .postcard {
+    width: 720px;
+    max-width: 100%;
+    aspect-ratio: 5 / 7;
+    background: #faf7f2;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.04),
+      0 4px 12px rgba(0,0,0,0.06),
+      0 12px 40px rgba(0,0,0,0.08);
+  }
+
+  /* Subtle paper texture */
+  .postcard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Top warm gradient wash */
+  .wash {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 55%;
+    background: linear-gradient(
+      180deg,
+      #e8d5c0 0%,
+      #eedcc8 25%,
+      #f2e6d6 50%,
+      #faf7f2 100%
+    );
+    opacity: 0.6;
+  }
+
+  /* Soft circle */
+  .orb {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #d4b896 0%, transparent 70%);
+    opacity: 0.12;
+    top: 8%;
+    right: -5%;
+  }
+
+  .orb-2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #c4a882 0%, transparent 70%);
+    opacity: 0.08;
+    bottom: 20%;
+    left: -3%;
+  }
+
+  /* Border frame */
+  .frame {
+    position: absolute;
+    top: 24px; left: 24px;
+    right: 24px; bottom: 24px;
+    border: 1px solid rgba(180, 165, 145, 0.3);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Content layout */
+  .card-content {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15% 12%;
+    text-align: center;
+  }
+
+  .card-top-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    font-style: italic;
+    letter-spacing: 0.4em;
+    color: #b0a191;
+    margin-bottom: 3rem;
+  }
+
+  .card-question {
+    font-weight: 300;
+    font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+    line-height: 2.2;
+    color: #3a3530;
+    letter-spacing: 0.05em;
+    margin-bottom: 3.5rem;
+  }
+
+  .card-line {
+    width: 32px;
+    height: 1px;
+    background: #c4a882;
+    margin: 0 auto 3.5rem;
+    opacity: 0.7;
+  }
+
+  .card-body {
+    font-weight: 200;
+    font-size: clamp(0.82rem, 1.8vw, 0.92rem);
+    line-height: 2.4;
+    color: #7a6e62;
+    max-width: 420px;
+    word-break: keep-all;
+  }
+
+  .card-body em {
+    font-style: normal;
+    font-weight: 400;
+    color: #5a4f44;
+  }
+
+  .card-footer {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .card-footer span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    color: #c0b5a6;
+    font-style: italic;
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: none; padding: 0; }
+    .postcard {
+      box-shadow: none;
+      width: 100%;
+      page-break-inside: avoid;
+    }
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1rem; }
+    .card-content { padding: 20% 8%; }
+    .frame { top: 16px; left: 16px; right: 16px; bottom: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="postcard">
+  <div class="wash"></div>
+  <div class="orb"></div>
+  <div class="orb-2"></div>
+  <div class="frame"></div>
+
+  <div class="card-content">
+    <div class="card-top-label">on beautiful uselessness</div>
+
+    <div class="card-question">
+      나를 기쁘게 하는<br>
+      아름답지만<br>
+      무용한 것은
+    </div>
+
+    <div class="card-line"></div>
+
+    <div class="card-body">
+      무용한데도 자꾸 하는 것,<br>
+      무용한데도 좋은 것 —<br>
+      그것은 이유를 댈 수 없다.<br>
+      <em>그냥 좋은 것이다.</em><br><br>
+      아무것도 남기지 않았는데<br>
+      전부 남아 있다.
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <span>MMXXVI</span>
+  </div>
+</div>
+
+</body>
+</html>

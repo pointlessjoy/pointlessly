@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>나를 기쁘게 하는 아름답지만 무용한 것은?</title>
+  <style>
+    body{margin:0;background:#fff;color:#111;font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Apple SD Gothic Neo',sans-serif}
+    .wrap{max-width:680px;margin:0 auto;padding:56px 20px}
+    h1{font-size:42px;line-height:1.16;letter-spacing:-.04em;margin:0 0 18px}
+    .sub{font-size:15px;color:#8a8a8f;margin:0 0 20px}
+    .box{border:1px solid #efefef;border-radius:18px;padding:14px}
+    .txt{width:100%;height:90px;border:0;outline:none;font-size:17px;line-height:1.4;resize:none}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .btn{background:#111;color:#fff;border:0;padding:10px 14px;border-radius:999px;cursor:pointer}
+    .feed{margin-top:14px}
+    .card{padding:14px 0;border-bottom:1px solid #f1f1f1}
+    .card p{margin:0 0 8px;font-size:20px;letter-spacing:-.02em}
+    .meta{display:flex;justify-content:space-between;color:#8a8a8f;font-size:12px;align-items:center}
+    .like{border:1px solid #e4e4e4;border-radius:999px;background:#fff;padding:5px 10px;cursor:pointer}
+    .hint{font-size:12px;color:#8a8a8f;margin-top:10px}
+    @media(max-width:768px){.wrap{padding:30px 14px}h1{font-size:30px}.card p{font-size:17px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>나를 기쁘게 하는 아름답지만 무용한 것은?</h1>
+    <p class="sub">한 문장으로 충분합니다.</p>
+
+    <section class="box">
+      <textarea id="text" class="txt" maxlength="80" placeholder="예: 버스 창문 물방울이 옆으로 흘러가는 순간"></textarea>
+      <div class="row">
+        <span id="count" style="font-size:12px;color:#8a8a8f">0/80</span>
+        <button id="submit" class="btn">답하기</button>
+      </div>
+    </section>
+
+    <p class="hint">익명으로 기록됩니다.</p>
+
+    <section id="feed" class="feed"></section>
+  </main>
+
+  <script>
+    const API = 'http://127.0.0.1:8791';
+    const textEl = document.getElementById('text');
+    const countEl = document.getElementById('count');
+    const feedEl = document.getElementById('feed');
+
+    textEl.addEventListener('input', () => {
+      countEl.textContent = `${textEl.value.length}/80`;
+    });
+
+    function timeAgo(iso) {
+      const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+      if (s < 60) return '방금 전';
+      if (s < 3600) return `${Math.floor(s/60)}분 전`;
+      if (s < 86400) return `${Math.floor(s/3600)}시간 전`;
+      return `${Math.floor(s/86400)}일 전`;
+    }
+
+    async function loadPosts(){
+      const res = await fetch(`${API}/api/posts`);
+      const posts = await res.json();
+      feedEl.innerHTML = posts.map(p => `
+        <article class="card">
+          <p>${p.text}</p>
+          <div class="meta">
+            <span>익명 · ${timeAgo(p.created_at)}</span>
+            <button class="like" data-id="${p.id}">좋아요 ${p.likes}</button>
+          </div>
+        </article>
+      `).join('');
+
+      document.querySelectorAll('.like').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          await fetch(`${API}/api/posts/${id}/like`, { method:'POST' });
+          loadPosts();
+        });
+      });
+    }
+
+    document.getElementById('submit').addEventListener('click', async () => {
+      const text = textEl.value.trim();
+      if (!text) return;
+      await fetch(`${API}/api/posts`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ text })
+      });
+      textEl.value = '';
+      countEl.textContent = '0/80';
+      loadPosts();
+    });
+
+    loadPosts();
+  </script>
+</body>
+</html>
