@@ -10,11 +10,27 @@ fi
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+# ---- Safety guard: ensure this is pointless-joy repo ----
+if [[ ! -f "PRODUCT_SPEC.md" ]]; then
+  echo "❌ Guard fail: PRODUCT_SPEC.md not found. Wrong project?"
+  exit 1
+fi
+if ! grep -qi "Pointless Joy\|무용한 기쁨\|무용한기쁨" PRODUCT_SPEC.md; then
+  echo "❌ Guard fail: PRODUCT_SPEC.md does not look like pointless-joy."
+  echo "   Refusing to run to avoid mixing with find-my-home."
+  exit 1
+fi
+
 DATE_KST="$(TZ=Asia/Seoul date +%F)"
+DATE_TS="$(TZ=Asia/Seoul date +%Y%m%d-%H%M)"
 AGENTS_RETRO="docs/retros/sprint-${SPRINT}-agents-retro.md"
 PO_RETRO="docs/retros/sprint-${SPRINT}-po-retro.md"
+SUMMARY="docs/retros/sprint-${SPRINT}-summary.md"
+ARCHIVE_DIR="archives"
+ARCHIVE_FILE="${ARCHIVE_DIR}/pointless-joy-sprint-${SPRINT}-${DATE_TS}.tar.gz"
+ARCHIVE_INDEX="${ARCHIVE_DIR}/INDEX.md"
 
-mkdir -p docs/retros
+mkdir -p docs/retros "$ARCHIVE_DIR"
 
 # Generate retrospective files if missing
 if [[ ! -f "$AGENTS_RETRO" ]]; then
@@ -28,7 +44,6 @@ if [[ ! -f "$PO_RETRO" ]]; then
 fi
 
 # Sprint summary stub
-SUMMARY="docs/retros/sprint-${SPRINT}-summary.md"
 if [[ ! -f "$SUMMARY" ]]; then
 cat > "$SUMMARY" <<EOF
 # Sprint ${SPRINT} Summary (${DATE_KST})
@@ -51,9 +66,31 @@ fi
 # Commit everything
 if [[ -n "$(git status --porcelain)" ]]; then
   git add -A
-  git commit -m "chore(sprint): finish sprint ${SPRINT} with retros"
+  git commit -m "pointless: finish sprint ${SPRINT} with retros"
 else
   echo "No changes to commit."
+fi
+
+COMMIT_HASH="$(git rev-parse --short HEAD)"
+
+# Archive current version (viewable by PO)
+git archive --format=tar.gz -o "$ARCHIVE_FILE" HEAD
+
+if [[ ! -f "$ARCHIVE_INDEX" ]]; then
+cat > "$ARCHIVE_INDEX" <<EOF
+# Pointless Joy Version Archive
+
+| Sprint | Date (KST) | Commit | Archive |
+|---|---|---|---|
+EOF
+fi
+
+echo "| ${SPRINT} | ${DATE_KST} | \\`${COMMIT_HASH}\\` | \\`${ARCHIVE_FILE}\\` |" >> "$ARCHIVE_INDEX"
+
+# Commit archive/index changes
+if [[ -n "$(git status --porcelain)" ]]; then
+  git add -A
+  git commit -m "pointless: archive sprint ${SPRINT} (${COMMIT_HASH})"
 fi
 
 # Auto push (requested policy)
@@ -67,3 +104,5 @@ else
 fi
 
 echo "Done: sprint ${SPRINT} closed."
+echo "Archive: $ARCHIVE_FILE"
+echo "Index:   $ARCHIVE_INDEX"
