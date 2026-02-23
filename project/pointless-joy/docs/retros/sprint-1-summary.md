@@ -1,4 +1,4 @@
-# Sprint 18 Summary (2026-02-24)
+# Sprint 1 Summary (2026-02-24)
 
 ## PRODUCT_SPEC 기준 진행
 - 완료 항목:

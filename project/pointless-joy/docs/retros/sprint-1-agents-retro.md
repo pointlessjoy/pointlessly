@@ -1,4 +1,4 @@
-# Sprint 18 — Agents Retrospective
+# Sprint 1 — Agents Retrospective
 
 ## 1) Sprint Goal vs Result
 - Goal:

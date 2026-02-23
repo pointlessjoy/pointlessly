@@ -1,4 +1,4 @@
-# Sprint 18 — PO Retrospective for Sue
+# Sprint 1 — PO Retrospective for Sue
 
 ## 한눈에 요약
 - 이번 스프린트 결과:
